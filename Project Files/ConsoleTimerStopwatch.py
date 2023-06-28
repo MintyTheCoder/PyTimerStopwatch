@@ -1,4 +1,6 @@
+#Disclaimer: This was made as an amatuer project that served as a predecesor to my GUITimerStopwatch project. This project does not have all the features to avoid errors and is easy to break or cause to stop working.
 import time
+from playsound import playsound as ps
 
 print("For a timer, enter 'timer' below")
 print("or")
@@ -12,44 +14,59 @@ if prompt == "stopwatch":
     if start == "start":
         s = 0
         m = 0
+        h = 0
         while s > -1:
-            print(f'{str(m).zfill(2)}m: {str(s).zfill(2)}s')
+            print(f'{str(h).zfill(2)}h: {str(m).zfill(2)}m: {str(s).zfill(2)}s')
             s += 1
             time.sleep(1)
             while s == 60:
                 s = 0
                 m += 1
+            while m == 60:
+                m= 0
+                h+=1
 
 elif prompt == "timer":
     print("Enter the value for each unit of time")
-    h_timer = int(input("Hours:"))
-    m_timer = int(input("Minutes:"))
-    if m_timer >= 60:
-        leftover = m_timer - 60
-        hours = m_timer//60
-        h_timer = h_timer + hours
-        m_timer = leftover
-    s_timer = int(input("Seconds:"))
-    if s_timer >= 60:
-        leftover = s_timer - 60
-        minutes = s_timer // 60
-        m_timer = m_timer + minutes
-        s_timer = leftover
+    hoursVar = int(input("Hours:"))
+    minutesVar = int(input("Minutes:"))
+    if minutesVar >= 60:
+        leftover = minutesVar - 60
+        hoursTemp = minutesVar//60
+        hoursVar = hoursVar + hoursTemp
+        minutesVar = leftover
+    secondsVar = int(input("Seconds:"))
+    if secondsVar >= 60:
+        leftover = secondsVar - 60
+        minutesTemp = secondsVar // 60
+        minutesVar = minutesVar + minutesTemp
+        secondsVar = leftover
 
     print("When ready, enter 'start' below")
     start = input()
     if start == "start":
-        while s_timer >= -1:
-            print(f'{str(h_timer).zfill(2)}h:{str(m_timer).zfill(2)}m:{str(s_timer).zfill(2)}s')
-            s_timer -= 1
-            if s_timer == -1:
-                m_timer -= 1
-                s_timer = 59
-            if m_timer == -1:
-                h_timer -= 1
-                m_timer = 59
+        while secondsVar > -1:
+            print(f'{str(hoursVar).zfill(2)}h:{str(minutesVar).zfill(2)}m:{str(secondsVar).zfill(2)}s')
+            secondsVar -= 1
+            if secondsVar == -1 and minutesVar ==0 and hoursVar==0:
+                try: 
+                    ps('AlarmSound.wav')
+                except:
+                    print("Timer soundfile not found")
+                
+                print("Timer Done")
+                time.sleep(5)
+                exit()
+            
+            if secondsVar == -1:
+                minutesVar -= 1
+                secondsVar = 59
+            if minutesVar == -1:
+                hoursVar -= 1
+                minutesVar = 59
             time.sleep(1)
+            
 
 # Created By: Minty B.
 # Created On: 19-June-2022
-# Last Edited 24-January-2023
+# Last Edited 27-June-2023
